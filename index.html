@@ -13,12 +13,12 @@
       h1 { margin:0; font-size:clamp(2rem,5vw,3rem); line-height:1.2; }
       .intro { max-width:680px; color:#5c667a; }
       .guides { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-top:28px; }
-      a.guide { display:block; padding:26px; border:1px solid #dce3ec; border-top:5px solid #176b87; border-radius:12px; color:inherit; background:#fff; box-shadow:0 12px 36px rgba(23,32,51,.08); text-decoration:none; }
+      a.guide { display:flex; flex-direction:column; padding:26px; border:1px solid #dce3ec; border-top:5px solid #176b87; border-radius:12px; color:inherit; background:#fff; box-shadow:0 12px 36px rgba(23,32,51,.08); text-decoration:none; }
       a.guide:hover,a.guide:focus-visible { border-color:#176b87; transform:translateY(-2px); }
       .label { color:#176b87; font-size:.82rem; font-weight:700; }
       h2 { margin:7px 0; font-size:1.3rem; line-height:1.35; }
       p { margin:0; color:#5c667a; }
-      .arrow { display:inline-block; margin-top:18px; color:#176b87; font-weight:700; }
+      .arrow { display:inline-block; margin-top:auto; padding-top:18px; color:#176b87; font-weight:700; }
       @media (max-width:640px) { main { padding:32px 0; } .guides { grid-template-columns:1fr; } }
     </style>
   </head>
