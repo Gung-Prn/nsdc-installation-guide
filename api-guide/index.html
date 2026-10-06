@@ -56,6 +56,12 @@
           <h2>2. การเตรียมใช้งาน</h2>
           <h3>2.1 ตั้งค่า Postman Environment</h3>
           <p>Import Collection แล้วกำหนดตัวแปรด้านล่างใน Environment หรือ Collection Variables โดยไม่ commit key ลง Git และไม่วาง key จริงในเอกสารสาธารณะ</p>
+          <div class="cards">
+            <div class="card"><strong>Windows 64-bit</strong><a class="button" href="https://dl.pstmn.io/download/latest/win64" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Postman</a></div>
+            <div class="card"><strong>macOS Apple Silicon</strong><a class="button" href="https://dl.pstmn.io/download/latest/osx_arm64" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Postman</a></div>
+            <div class="card"><strong>macOS Intel</strong><a class="button" href="https://dl.pstmn.io/download/latest/osx_64" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Postman</a></div>
+          </div>
+          <p class="small">หากไม่แน่ใจเรื่องรุ่นของเครื่อง ให้เปิด <a href="https://www.postman.com/downloads/" target="_blank" rel="noopener noreferrer">หน้า Download ของ Postman</a> เพื่อเลือกระบบปฏิบัติการที่เหมาะสม</p>
           <div class="table-wrap"><table><thead><tr><th>ตัวแปร</th><th>ความหมาย</th><th>ตัวอย่าง</th></tr></thead><tbody><tr><td><code>host</code></td><td>Base URL ของ Vallaris API</td><td><code>https://&lt;your-host&gt;</code></td></tr><tr><td><code>apikey</code></td><td>API key ที่ส่งใน header</td><td><code>YOUR_API_KEY</code></td></tr></tbody></table></div>
           <h3>2.2 รูปแบบ Authentication</h3>
           <pre><code>API-Key: {{apikey}}</code></pre>
