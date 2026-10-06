@@ -12,7 +12,7 @@
       .eyebrow { margin:0 0 8px; color:#176b87; font-size:.8rem; font-weight:700; letter-spacing:.08em; }
       h1 { margin:0; font-size:clamp(2rem,5vw,3rem); line-height:1.2; }
       .intro { max-width:680px; color:#5c667a; }
-      .guides { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:28px; }
+      .guides { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-top:28px; }
       a.guide { display:block; padding:26px; border:1px solid #dce3ec; border-top:5px solid #176b87; border-radius:12px; color:inherit; background:#fff; box-shadow:0 12px 36px rgba(23,32,51,.08); text-decoration:none; }
       a.guide:hover,a.guide:focus-visible { border-color:#176b87; transform:translateY(-2px); }
       .label { color:#176b87; font-size:.82rem; font-weight:700; }
@@ -38,6 +38,12 @@
           <span class="label">VALLARIS MAPS</span>
           <h2>คู่มือการประมวลผลข้อมูล</h2>
           <p>การใช้ Module, Data Pipeline และตัวอย่าง THEOS ARD</p>
+          <span class="arrow">เปิดคู่มือ →</span>
+        </a>
+        <a class="guide" href="api-guide/">
+          <span class="label">VALLARIS API</span>
+          <h2>คู่มือ STAC &amp; Catalogue API</h2>
+          <p>ค้นหา จัดการ Catalogue และเผยแพร่ข้อมูล STAC ผ่าน API</p>
           <span class="arrow">เปิดคู่มือ →</span>
         </a>
       </div>

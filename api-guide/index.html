@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>คู่มือ Vallaris STAC &amp; Catalogue API</title>
+    <style>
+      :root { --ink:#172033; --muted:#5c667a; --paper:#fff; --soft:#f3f6fa; --line:#dce3ec; --accent:#176b87; --accent-soft:#e8f4f7; --code:#111827; --get:#176b87; --post:#1d6b47; --put:#8a5a10; --delete:#a53a3a; --radius:12px; --shadow:0 12px 36px rgba(23,32,51,.08); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,"Noto Sans Thai",Arial,sans-serif; color:var(--ink); background:var(--soft); }
+      * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; line-height:1.65; } a { color:var(--accent); }
+      .page { display:grid; grid-template-columns:260px minmax(0,920px); gap:32px; max-width:1250px; margin:0 auto; padding:32px 24px 64px; }
+      nav { position:sticky; top:24px; align-self:start; padding:20px; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); box-shadow:var(--shadow); }
+      nav strong { display:block; margin-bottom:10px; font-size:.92rem; } nav a { display:block; padding:5px 0; color:var(--muted); font-size:.88rem; text-decoration:none; } nav a:hover,nav a:focus-visible { color:var(--accent); text-decoration:underline; }
+      main { min-width:0; } header,section { margin-bottom:24px; padding:30px 34px; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); box-shadow:var(--shadow); } header { border-top:5px solid var(--accent); }
+      .eyebrow { margin:0 0 10px; color:var(--accent); font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; } h1,h2,h3 { margin-top:0; line-height:1.3; } h1 { margin-bottom:12px; font-size:clamp(1.85rem,4vw,2.65rem); } h2 { padding-bottom:10px; border-bottom:1px solid var(--line); font-size:1.45rem; } h3 { margin-top:26px; margin-bottom:8px; font-size:1.08rem; } p { margin:10px 0; } ul,ol { padding-left:1.45rem; } li + li { margin-top:5px; }
+      .meta { display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:18px; color:var(--muted); font-size:.88rem; } .button { display:inline-block; margin-top:14px; padding:8px 12px; border:1px solid var(--accent); border-radius:7px; font-weight:700; text-decoration:none; } .button:hover,.button:focus-visible { color:#fff; background:var(--accent); }
+      .callout { margin:18px 0; padding:14px 16px; border-left:4px solid var(--accent); border-radius:6px; background:var(--accent-soft); } .callout.warning { border-left-color:#8a5a10; background:#fff8e9; }
+      .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:18px 0; } .card { padding:15px; border:1px solid var(--line); border-radius:9px; background:var(--soft); } .card strong { display:block; margin-bottom:4px; }
+      code,pre { font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace; } code { padding:.1em .34em; border-radius:4px; background:#edf1f6; font-size:.9em; } pre { overflow-x:auto; margin:12px 0 18px; padding:16px; border-radius:9px; color:#f7fafc; background:var(--code); font-size:.84rem; line-height:1.55; white-space:pre; } pre code { padding:0; color:inherit; background:transparent; }
+      .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:18px 0; } .flow span { padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--soft); font-size:.9rem; } .flow b { color:var(--accent); }
+      .table-wrap { overflow-x:auto; margin:14px 0 20px; } table { width:100%; border-collapse:collapse; font-size:.88rem; } th,td { padding:10px 11px; border:1px solid var(--line); text-align:left; vertical-align:top; } th { background:var(--soft); } td code { white-space:nowrap; }
+      .method { display:inline-block; min-width:52px; padding:2px 6px; border-radius:4px; color:#fff; font-family:"SFMono-Regular",Consolas,monospace; font-size:.78rem; font-weight:700; text-align:center; } .get { background:var(--get); } .post { background:var(--post); } .put { background:var(--put); } .delete { background:var(--delete); }
+      details { margin:12px 0; border:1px solid var(--line); border-radius:8px; overflow:hidden; } summary { padding:12px 14px; background:var(--soft); cursor:pointer; font-weight:700; } details .table-wrap { margin:0; } .small { color:var(--muted); font-size:.9rem; }
+      @media (max-width:850px) { .page { display:block; padding:18px 14px 42px; } nav { position:static; margin-bottom:18px; } header,section { padding:24px 20px; } .cards { grid-template-columns:1fr; } }
+      @media print { :root { background:#fff; } .page { display:block; max-width:none; padding:0; } nav { display:none; } header,section { break-inside:avoid; box-shadow:none; } a { color:inherit; } }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav aria-label="สารบัญ">
+        <strong>สารบัญคู่มือ API</strong>
+        <a href="#overview">1. ภาพรวม</a>
+        <a href="#setup">2. การเตรียมใช้งาน</a>
+        <a href="#consumer">3. ค้นหาและดาวน์โหลด</a>
+        <a href="#catalogue">4. จัดการ Catalogue</a>
+        <a href="#publish">5. สร้างและเผยแพร่ STAC</a>
+        <a href="#reference">6. API Reference</a>
+      </nav>
+      <main>
+        <header>
+          <p class="eyebrow">Vallaris Maps / API Training Guide</p>
+          <h1>คู่มือ Vallaris STAC &amp; Catalogue API</h1>
+          <p>คู่มือใช้งาน API สำหรับค้นหา จัดการ Catalogue สร้างข้อมูล STAC และเผยแพร่ข้อมูลเชิงพื้นที่ผ่าน Vallaris Maps</p>
+          <a class="button" href="https://drive.google.com/file/d/1TBSRw6VZDg3DpgOHEyAEIf75QvSIEg55/view?usp=sharing" target="_blank" rel="noopener noreferrer">เปิด Postman Collection ต้นฉบับ</a>
+          <div class="meta"><span>48 endpoints</span><span>STAC API / Catalogue API</span><span>อ้างอิง Postman Collection</span></div>
+        </header>
+
+        <section id="overview">
+          <h2>1. ภาพรวม</h2>
+          <p>Collection นี้มี API สองกลุ่มสำหรับงานคนละบทบาท โดยใช้ header <code>API-Key</code> กับทุก request ที่ระบุใน Collection</p>
+          <div class="cards"><div class="card"><strong>STAC API</strong>สร้างและจัดการโครงสร้าง STAC, Catalog, Collection, Item และ Queryable</div><div class="card"><strong>Catalogue API</strong>จัดการรายการ Catalogue ที่เชื่อมกับ STAC และใช้เป็นจุดเริ่มต้นของผู้ใช้ปลายทาง</div><div class="card"><strong>Search &amp; Download</strong>ค้นหารายการภาพแบบ STAC Search และดาวน์โหลด asset ของ Item</div></div>
+          <div class="callout"><strong>ขอบเขตของคู่มือนี้:</strong> แสดง request, URL, parameter และ payload ตาม Collection เท่านั้น ยังไม่รวมตัวอย่าง response จริงหรือ error code</div>
+          <div class="flow"><span>Catalogue</span><b>→</b><span>STAC</span><b>→</b><span>Collection</span><b>→</b><span>Item / Asset</span><b>→</b><span>Search / Download</span></div>
+        </section>
+
+        <section id="setup">
+          <h2>2. การเตรียมใช้งาน</h2>
+          <h3>2.1 ตั้งค่า Postman Environment</h3>
+          <p>Import Collection แล้วกำหนดตัวแปรด้านล่างใน Environment หรือ Collection Variables โดยไม่ commit key ลง Git และไม่วาง key จริงในเอกสารสาธารณะ</p>
+          <div class="table-wrap"><table><thead><tr><th>ตัวแปร</th><th>ความหมาย</th><th>ตัวอย่าง</th></tr></thead><tbody><tr><td><code>host</code></td><td>Base URL ของ Vallaris API</td><td><code>https://&lt;your-host&gt;</code></td></tr><tr><td><code>apikey</code></td><td>API key ที่ส่งใน header</td><td><code>YOUR_API_KEY</code></td></tr></tbody></table></div>
+          <h3>2.2 รูปแบบ Authentication</h3>
+          <pre><code>API-Key: {{apikey}}</code></pre>
+          <h3>2.3 ตรวจสถานะบริการ</h3>
+          <pre><code>GET {{host}}/stac/health
+GET {{host}}/catalogue/health</code></pre>
+          <div class="callout warning"><strong>ข้อควรระวัง:</strong> API key ใน payload สำหรับสร้าง Catalogue เป็นข้อมูลอ่อนไหว ให้ใช้ placeholder ในคู่มือ และส่งค่าจริงผ่านช่องทางที่องค์กรอนุมัติเท่านั้น</div>
+        </section>
+
+        <section id="consumer">
+          <h2>3. ค้นหาและดาวน์โหลดข้อมูล</h2>
+          <h3>3.1 ดูรายการ Catalogue</h3>
+          <pre><code>GET {{host}}/catalogue/1.0/catalogues?limit=100
+API-Key: {{apikey}}</code></pre>
+          <p>ใช้ <code>catalogueId</code> จากรายการที่ได้รับเพื่อค้นหา STAC ของ Catalogue นั้นในขั้นตอนถัดไป</p>
+          <h3>3.2 ค้นหา Item ด้วย POST</h3>
+          <pre><code>POST {{host}}/catalogue/1.0/catalogues/:catalogueId/stac/search
+API-Key: {{apikey}}
+Content-Type: application/json
+
+{
+  "collections": ["YOUR_COLLECTION_ID"],
+  "bbox": [102.491455, 15.082732, 105.325928, 17.161786],
+  "datetime": "2021-03-23T03:19:32.708Z/..",
+  "filter": {
+    "op": "and",
+    "args": [
+      { "op": ">=", "args": [{ "property": "sun_azimuth" }, 100] },
+      { "op": "=", "args": [{ "property": "imaging_mode" }, "MS"] }
+    ]
+  },
+  "sortby": "-id",
+  "offset": 0,
+  "limit": 10
+}</code></pre>
+          <p>Fields เช่น <code>ids</code>, <code>collections</code>, <code>bbox</code>, <code>intersects</code>, <code>datetime</code>, <code>filter</code>, <code>sortby</code>, <code>offset</code> และ <code>limit</code> ใช้ประกอบกันได้ตามเงื่อนไขค้นหา</p>
+          <h3>3.3 ดาวน์โหลด Asset</h3>
+          <pre><code>GET {{host}}/catalogue/1.0/catalogues/:catalogueId/collections/:collectionId/items/:itemId/download?asset=S3:zip&amp;redirect=false
+API-Key: {{apikey}}</code></pre>
+        </section>
+
+        <section id="catalogue">
+          <h2>4. จัดการ Catalogue</h2>
+          <p>Catalogue ทำหน้าที่เชื่อมรายการที่ผู้ใช้ค้นหาได้เข้ากับ <code>stac_id</code> ของ STAC ที่เผยแพร่แล้ว</p>
+          <h3>4.1 สร้าง Catalogue</h3>
+          <pre><code>POST {{host}}/catalogue/1.0/catalogues
+API-Key: {{apikey}}
+Content-Type: application/json
+
+{
+  "title": "THEOS ARD",
+  "stac_id": "THEOS_ARD",
+  "api_key": "YOUR_CATALOGUE_API_KEY",
+  "source": "internal",
+  "enabled": true
+}</code></pre>
+          <p>ค่าที่สำคัญคือ <code>title</code>, <code>stac_id</code>, <code>source</code> และ <code>enabled</code> ส่วน <code>api_key</code> ต้องไม่แสดงเป็นค่าจริงในคู่มือหรือ source code</p>
+          <h3>4.2 วงจรการจัดการ</h3>
+          <div class="flow"><span>สร้าง</span><b>→</b><span>ตรวจรายการ</span><b>→</b><span>แก้ไข</span><b>→</b><span>เปิด/ปิดใช้งาน</span><b>→</b><span>ลบเมื่อเลิกใช้งาน</span></div>
+        </section>
+
+        <section id="publish">
+          <h2>5. สร้างและเผยแพร่ STAC</h2>
+          <h3>5.1 ลำดับงานที่แนะนำ</h3>
+          <ol><li>สร้าง STAC root เพื่อเป็นพื้นที่ครอบชุดข้อมูล</li><li>เพิ่ม Catalog เมื่อจำเป็นต้องแบ่งลำดับชั้น</li><li>สร้าง Collection เพื่อระบุขอบเขตเชิงพื้นที่และช่วงเวลา</li><li>เพิ่ม Item/Feature พร้อม geometry, properties และ assets</li><li>กำหนด Queryable สำหรับฟิลด์ที่จะนำไปค้นหา</li><li>สร้าง Catalogue ที่อ้างอิง <code>stac_id</code> เพื่อเปิดให้ผู้ใช้ค้นหา</li></ol>
+          <h3>5.2 สร้าง STAC root</h3>
+          <pre><code>POST {{host}}/stac/1.0/stacs
+API-Key: {{apikey}}
+
+{
+  "id": "THEOS_ARD",
+  "title": "THEOS ARD",
+  "description": "THEOS ARD STAC catalogue",
+  "status": "Publish",
+  "require_auth": "true"
+}</code></pre>
+          <h3>5.3 สร้าง Collection และ Item</h3>
+          <pre><code>POST {{host}}/stac/1.0/:stacId/collections
+POST {{host}}/stac/1.0/:stacId/collections/:collectionId/items
+
+Collection: id, type, stac_version, extent, license, summaries
+Item:       id, type=Feature, geometry, properties.datetime, collection, assets</code></pre>
+          <p>Asset ใน Item กำหนดเป็น object เช่น <code>visual</code> หรือ <code>thumbnail</code> โดยระบุ <code>href</code>, <code>type</code>, <code>title</code> และ <code>roles</code></p>
+          <h3>5.4 กำหนด Queryables</h3>
+          <p>ใช้ Queryable ระดับ STAC root หรือ Collection เพื่อเผยแพร่ชื่อฟิลด์ที่ระบบค้นหาได้ แล้วนำ field นั้นไปอ้างอิงด้วย <code>filter.property</code> ใน STAC Search</p>
+        </section>
+
+        <section id="reference">
+          <h2>6. API Reference</h2>
+          <p class="small">ตารางนี้อ้างอิง endpoint จาก Postman Collection โดยยังไม่รวม response body และ error code</p>
+          <details open><summary>STAC management</summary><div class="table-wrap"><table><thead><tr><th>Method</th><th>Endpoint</th><th>งาน</th></tr></thead><tbody>
+            <tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/stacs</code></td><td>สร้าง STAC</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/stacs</code></td><td>ดูรายการ STAC</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/stacs/:stacId</code></td><td>ดู STAC</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/stacs/:stacId</code></td><td>แก้ไข STAC</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/stacs/:stacId</code></td><td>ลบ STAC</td></tr>
+          </tbody></table></div></details>
+          <details><summary>STAC Core, Children และ Catalog</summary><div class="table-wrap"><table><thead><tr><th>Method</th><th>Endpoint</th><th>งาน</th></tr></thead><tbody>
+            <tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/</code></td><td>Landing page</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/conformance</code></td><td>Conformance</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/api</code></td><td>Service description</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/api.html</code></td><td>Service documentation</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/children</code></td><td>Root children</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/catalogs/:catalogId/children</code></td><td>Catalog children</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/children</code></td><td>Collection children</td></tr><tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/catalogs</code></td><td>สร้าง Catalog</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/catalogs</code></td><td>ดู Catalog ทั้งหมด</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/catalogs/:catalogId</code></td><td>ดู Catalog</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/:stacId/catalogs/:catalogId</code></td><td>แก้ไข Catalog</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/:stacId/catalogs/:catalogId</code></td><td>ลบ Catalog</td></tr>
+          </tbody></table></div></details>
+          <details><summary>Collection, Item และ Search</summary><div class="table-wrap"><table><thead><tr><th>Method</th><th>Endpoint</th><th>งาน</th></tr></thead><tbody>
+            <tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/collections</code></td><td>สร้าง Collection</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections</code></td><td>ดู Collection ทั้งหมด</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId</code></td><td>ดู Collection</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId</code></td><td>แก้ไข Collection</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId</code></td><td>ลบ Collection</td></tr><tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/items</code></td><td>สร้าง Item</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/items</code></td><td>ดู Item ทั้งหมด</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/items/:featureId</code></td><td>ดู Item</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/items/:featureId/download?asset=S3:zip</code></td><td>ดาวน์โหลด asset</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/items/:featureId</code></td><td>แก้ไข Item</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/items/:featureId</code></td><td>ลบ Item</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/search</code></td><td>ค้นหา Item ผ่าน query</td></tr><tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/search</code></td><td>ค้นหา Item ผ่าน body</td></tr>
+          </tbody></table></div></details>
+          <details><summary>Queryables และ Health</summary><div class="table-wrap"><table><thead><tr><th>Method</th><th>Endpoint</th><th>งาน</th></tr></thead><tbody>
+            <tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables</code></td><td>สร้าง Collection queryable</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables</code></td><td>ดู Collection queryable</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables</code></td><td>แก้ไข Collection queryable</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables?forever=false</code></td><td>ลบ Collection queryable</td></tr><tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>สร้าง root queryable</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>ดู root queryable</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>แก้ไข root queryable</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>ลบ root queryable</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/health</code></td><td>ตรวจสถานะ STAC API</td></tr>
+          </tbody></table></div></details>
+          <details><summary>Catalogue API</summary><div class="table-wrap"><table><thead><tr><th>Method</th><th>Endpoint</th><th>งาน</th></tr></thead><tbody>
+            <tr><td><span class="method post">POST</span></td><td><code>/catalogue/1.0/catalogues</code></td><td>สร้าง Catalogue</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues</code></td><td>ดู Catalogue ทั้งหมด</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId</code></td><td>ดู Catalogue</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId</code></td><td>แก้ไข Catalogue</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId?forever=true</code></td><td>ลบ Catalogue</td></tr><tr><td><span class="method post">POST</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId/stac/search</code></td><td>ค้นหา Item ใน Catalogue</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId/stac/:stacPath</code></td><td>อ่าน STAC resource</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId/collections/:collectionId/items/:itemId/download?asset=S3:zip&amp;redirect=false</code></td><td>ดาวน์โหลด asset</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/health</code></td><td>ตรวจสถานะ Catalogue API</td></tr>
+          </tbody></table></div></details>
+          <div class="callout"><strong>ก่อนนำไปใช้จริง:</strong> ตรวจสิทธิ์ API key, naming convention ของ ID, และนโยบายการลบข้อมูลกับผู้ดูแลระบบก่อนเรียก endpoint ที่เปลี่ยนแปลงหรือลบข้อมูล</div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
