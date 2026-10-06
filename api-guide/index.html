@@ -19,7 +19,7 @@
       .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:18px 0; } .flow span { padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--soft); font-size:.9rem; } .flow b { color:var(--accent); }
       .table-wrap { overflow-x:auto; margin:14px 0 20px; } table { width:100%; border-collapse:collapse; font-size:.88rem; } th,td { padding:10px 11px; border:1px solid var(--line); text-align:left; vertical-align:top; } th { background:var(--soft); } td code { white-space:nowrap; }
       .method { display:inline-block; min-width:52px; padding:2px 6px; border-radius:4px; color:#fff; font-family:"SFMono-Regular",Consolas,monospace; font-size:.78rem; font-weight:700; text-align:center; } .get { background:var(--get); } .post { background:var(--post); } .put { background:var(--put); } .delete { background:var(--delete); }
-      details { margin:12px 0; border:1px solid var(--line); border-radius:8px; overflow:hidden; } summary { padding:12px 14px; background:var(--soft); cursor:pointer; font-weight:700; } details .table-wrap { margin:0; } #reference details:last-of-type table { table-layout:fixed; } #reference details:last-of-type th:nth-child(1),#reference details:last-of-type td:nth-child(1) { width:10%; } #reference details:last-of-type th:nth-child(2),#reference details:last-of-type td:nth-child(2) { width:38%; } #reference details:last-of-type th:nth-child(3),#reference details:last-of-type td:nth-child(3) { width:52%; } #reference details:last-of-type td:nth-child(2) code { white-space:normal; overflow-wrap:anywhere; } .small { color:var(--muted); font-size:.9rem; }
+      details { margin:12px 0; border:1px solid var(--line); border-radius:8px; overflow:hidden; } summary { padding:12px 14px; background:var(--soft); cursor:pointer; font-weight:700; } details .table-wrap { margin:0; } #catalogue-api-reference table { table-layout:fixed; } #catalogue-api-reference col:nth-child(1) { width:10%; } #catalogue-api-reference col:nth-child(2) { width:38%; } #catalogue-api-reference col:nth-child(3) { width:52%; } #catalogue-api-reference td:nth-child(2) code { white-space:normal; overflow-wrap:anywhere; } .column-resizer { position:absolute; z-index:1; top:0; right:-6px; width:12px; height:100%; cursor:col-resize; touch-action:none; } .column-resizer::after { position:absolute; top:0; bottom:0; left:5px; width:2px; background:transparent; content:""; } .column-resizer:hover::after,.column-resizer:focus-visible::after { background:var(--accent); } .resizing-columns { cursor:col-resize; user-select:none; } .small { color:var(--muted); font-size:.9rem; }
       @media (max-width:850px) { .page { display:block; padding:18px 14px 42px; } nav { position:static; margin-bottom:18px; } header,section { padding:24px 20px; } .cards { grid-template-columns:1fr; } }
       @media print { :root { background:#fff; } .page { display:block; max-width:none; padding:0; } nav { display:none; } header,section { break-inside:avoid; box-shadow:none; } a { color:inherit; } }
     </style>
@@ -164,12 +164,78 @@ Item:       id, type=Feature, geometry, properties.datetime, collection, assets<
           <details><summary>Queryables และ Health</summary><div class="table-wrap"><table><thead><tr><th>Method</th><th>Endpoint</th><th>งาน</th></tr></thead><tbody>
             <tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables</code></td><td>สร้าง Collection queryable</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables</code></td><td>ดู Collection queryable</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables</code></td><td>แก้ไข Collection queryable</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/:stacId/collections/:collectionId/queryables?forever=false</code></td><td>ลบ Collection queryable</td></tr><tr><td><span class="method post">POST</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>สร้าง root queryable</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>ดู root queryable</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>แก้ไข root queryable</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/stac/1.0/:stacId/queryables</code></td><td>ลบ root queryable</td></tr><tr><td><span class="method get">GET</span></td><td><code>/stac/health</code></td><td>ตรวจสถานะ STAC API</td></tr>
           </tbody></table></div></details>
-          <details open><summary>Catalogue API — หน้าที่ของแต่ละเส้นทาง</summary><div class="table-wrap"><table><thead><tr><th>Method</th><th>Endpoint</th><th>หน้าที่</th></tr></thead><tbody>
+          <details open id="catalogue-api-reference"><summary>Catalogue API — หน้าที่ของแต่ละเส้นทาง</summary><div class="table-wrap"><table><colgroup><col /><col /><col /></colgroup><thead><tr><th>Method</th><th>Endpoint</th><th>หน้าที่</th></tr></thead><tbody>
             <tr><td><span class="method post">POST</span></td><td><code>/catalogue/1.0/catalogues</code></td><td>สร้างรายการ Catalogue ใหม่และผูกเข้ากับ <code>stac_id</code> เพื่อเปิดชุดข้อมูลให้ผู้ใช้ค้นหาได้</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues</code></td><td>ดึงรายการ Catalogue สำหรับแสดงหรือให้ผู้ใช้เลือกก่อนเริ่มค้นหาข้อมูล</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId</code></td><td>อ่านรายละเอียด Catalogue เฉพาะรายการจาก <code>catalogueId</code> เช่นข้อมูลที่ผูกกับ STAC และสถานะการใช้งาน</td></tr><tr><td><span class="method put">PUT</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId</code></td><td>แก้ไขข้อมูลตั้งค่า Catalogue เช่นชื่อ แหล่งข้อมูล แท็ก หรือสถานะเปิด/ปิดการใช้งาน</td></tr><tr><td><span class="method delete">DELETE</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId?forever=true</code></td><td>ลบ Catalogue ตามรหัสที่ระบุ โดย <code>forever=true</code> ใช้สำหรับลบถาวร</td></tr><tr><td><span class="method post">POST</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId/stac/search</code></td><td>ค้นหา STAC Item ภายใน Catalogue ด้วยเงื่อนไข เช่นพื้นที่ ช่วงเวลา filter การเรียงลำดับ และการแบ่งหน้า</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId/stac/:stacPath</code></td><td>อ่าน STAC resource ที่อ้างอิงจาก Catalogue เช่น landing page, Collection, Item หรือ Queryable โดยส่ง path ต่อท้ายใน <code>stacPath</code></td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/1.0/catalogues/:catalogueId/collections/:collectionId/items/:itemId/download?asset=S3:zip&amp;redirect=false</code></td><td>ขอดาวน์โหลด asset ที่เลือกจาก Item โดยระบุชื่อ asset และกำหนดพฤติกรรมการ redirect ได้</td></tr><tr><td><span class="method get">GET</span></td><td><code>/catalogue/health</code></td><td>ตรวจสอบความพร้อมใช้งานของบริการ Catalogue API ก่อนเรียกใช้งานจริง</td></tr>
           </tbody></table></div></details>
           <div class="callout"><strong>ก่อนนำไปใช้จริง:</strong> ตรวจสิทธิ์ API key, naming convention ของ ID, และนโยบายการลบข้อมูลกับผู้ดูแลระบบก่อนเรียก endpoint ที่เปลี่ยนแปลงหรือลบข้อมูล</div>
         </section>
       </main>
     </div>
+    <script>
+      (() => {
+        const table = document.querySelector('#catalogue-api-reference table');
+        if (!table) return;
+
+        const columns = [...table.querySelectorAll('col')];
+        const headers = [...table.querySelectorAll('thead th')];
+        const defaultWidths = [0.10, 0.38, 0.52];
+        const minimumWidths = [72, 180, 240];
+
+        const resetWidths = () => {
+          const tableWidth = table.getBoundingClientRect().width;
+          columns.forEach((column, index) => {
+            column.style.width = `${Math.round(tableWidth * defaultWidths[index])}px`;
+          });
+        };
+
+        headers.slice(0, -1).forEach((header, index) => {
+          header.style.position = 'relative';
+          const handle = document.createElement('span');
+          handle.className = 'column-resizer';
+          handle.tabIndex = 0;
+          handle.setAttribute('role', 'separator');
+          handle.setAttribute('aria-orientation', 'vertical');
+          handle.setAttribute('aria-label', `ปรับความกว้างระหว่างคอลัมน์ ${headers[index].textContent} และ ${headers[index + 1].textContent}`);
+          handle.title = 'ลากเพื่อปรับความกว้างคอลัมน์ หรือดับเบิลคลิกเพื่อกลับค่าเริ่มต้น';
+
+          handle.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+            const startX = event.clientX;
+            const startWidths = columns.map((column) => column.getBoundingClientRect().width);
+            document.body.classList.add('resizing-columns');
+            handle.setPointerCapture(event.pointerId);
+
+            const resize = (moveEvent) => {
+              const delta = Math.min(
+                startWidths[index + 1] - minimumWidths[index + 1],
+                Math.max(minimumWidths[index] - startWidths[index], moveEvent.clientX - startX),
+              );
+              columns[index].style.width = `${Math.round(startWidths[index] + delta)}px`;
+              columns[index + 1].style.width = `${Math.round(startWidths[index + 1] - delta)}px`;
+            };
+
+            const stopResize = () => {
+              document.body.classList.remove('resizing-columns');
+              handle.removeEventListener('pointermove', resize);
+              handle.removeEventListener('pointerup', stopResize);
+              handle.removeEventListener('pointercancel', stopResize);
+            };
+
+            handle.addEventListener('pointermove', resize);
+            handle.addEventListener('pointerup', stopResize);
+            handle.addEventListener('pointercancel', stopResize);
+          });
+
+          handle.addEventListener('dblclick', resetWidths);
+          handle.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              resetWidths();
+            }
+          });
+          header.append(handle);
+        });
+      })();
+    </script>
   </body>
 </html>
