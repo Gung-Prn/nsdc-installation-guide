@@ -19,7 +19,7 @@
       .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:18px 0; } .flow span { padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--soft); font-size:.9rem; } .flow b { color:var(--accent); }
       .table-wrap { overflow-x:auto; margin:14px 0 20px; } table { width:100%; border-collapse:collapse; font-size:.88rem; } th,td { padding:10px 11px; border:1px solid var(--line); text-align:left; vertical-align:top; } th { background:var(--soft); } td code { white-space:nowrap; }
       .method { display:inline-block; min-width:52px; padding:2px 6px; border-radius:4px; color:#fff; font-family:"SFMono-Regular",Consolas,monospace; font-size:.78rem; font-weight:700; text-align:center; } .get { background:var(--get); } .post { background:var(--post); } .put { background:var(--put); } .delete { background:var(--delete); }
-      details { margin:12px 0; border:1px solid var(--line); border-radius:8px; overflow:hidden; } summary { padding:12px 14px; background:var(--soft); cursor:pointer; font-weight:700; } details .table-wrap { margin:0; } #catalogue-api-reference table { table-layout:fixed; } #catalogue-api-reference col:nth-child(1) { width:10%; } #catalogue-api-reference col:nth-child(2) { width:38%; } #catalogue-api-reference col:nth-child(3) { width:52%; } #catalogue-api-reference td:nth-child(2) code { white-space:normal; overflow-wrap:anywhere; } .column-resizer { position:absolute; z-index:1; top:0; right:-6px; width:12px; height:100%; cursor:col-resize; touch-action:none; } .column-resizer::after { position:absolute; top:0; bottom:0; left:5px; width:2px; background:transparent; content:""; } .column-resizer:hover::after,.column-resizer:focus-visible::after { background:var(--accent); } .resizing-columns { cursor:col-resize; user-select:none; } .small { color:var(--muted); font-size:.9rem; }
+      details { margin:12px 0; border:1px solid var(--line); border-radius:8px; overflow:hidden; } summary { padding:12px 14px; background:var(--soft); cursor:pointer; font-weight:700; } details .table-wrap { margin:0; } .resizable-table { table-layout:fixed; } .resizable-table td code { white-space:normal; overflow-wrap:anywhere; } .column-resizer { position:absolute; z-index:1; top:0; right:-6px; width:12px; height:100%; cursor:col-resize; touch-action:none; } .column-resizer::after { position:absolute; top:0; bottom:0; left:5px; width:2px; background:transparent; content:""; } .column-resizer:hover::after,.column-resizer:focus-visible::after { background:var(--accent); } .resizing-columns { cursor:col-resize; user-select:none; } .small { color:var(--muted); font-size:.9rem; }
       @media (max-width:850px) { .page { display:block; padding:18px 14px 42px; } nav { position:static; margin-bottom:18px; } header,section { padding:24px 20px; } .cards { grid-template-columns:1fr; } }
       @media print { :root { background:#fff; } .page { display:block; max-width:none; padding:0; } nav { display:none; } header,section { break-inside:avoid; box-shadow:none; } a { color:inherit; } }
     </style>
@@ -173,22 +173,40 @@ Item:       id, type=Feature, geometry, properties.datetime, collection, assets<
     </div>
     <script>
       (() => {
-        const table = document.querySelector('#catalogue-api-reference table');
-        if (!table) return;
+        document.querySelectorAll('table').forEach((table) => {
+          const headers = [...table.querySelectorAll(':scope > thead th')];
+          if (headers.length < 2) return;
 
-        const columns = [...table.querySelectorAll('col')];
-        const headers = [...table.querySelectorAll('thead th')];
-        const defaultWidths = [0.10, 0.38, 0.52];
-        const minimumWidths = [72, 180, 240];
-
-        const resetWidths = () => {
+          const catalogueTable = table.closest('#catalogue-api-reference');
+          const firstRow = table.querySelector(':scope > tbody > tr');
+          const rowCells = firstRow ? [...firstRow.children] : [];
           const tableWidth = table.getBoundingClientRect().width;
-          columns.forEach((column, index) => {
-            column.style.width = `${Math.round(tableWidth * defaultWidths[index])}px`;
-          });
-        };
+          const defaultWidths = catalogueTable
+            ? [0.10, 0.38, 0.52]
+            : rowCells.length === headers.length && tableWidth
+              ? rowCells.map((cell) => cell.getBoundingClientRect().width / tableWidth)
+              : headers.map(() => 1 / headers.length);
+          const minimumWidths = catalogueTable
+            ? [72, 180, 240]
+            : headers.map((header, index) => /endpoint/i.test(header.textContent) ? 180 : index === 0 ? 72 : 140);
+          let colgroup = table.querySelector(':scope > colgroup');
+          if (!colgroup) {
+            colgroup = document.createElement('colgroup');
+            table.prepend(colgroup);
+          }
+          while (colgroup.children.length < headers.length) colgroup.append(document.createElement('col'));
+          const columns = [...colgroup.children].slice(0, headers.length);
 
-        headers.slice(0, -1).forEach((header, index) => {
+          const resetWidths = () => {
+            columns.forEach((column, index) => {
+              column.style.width = `${defaultWidths[index] * 100}%`;
+            });
+          };
+
+          table.classList.add('resizable-table');
+          resetWidths();
+
+          headers.slice(0, -1).forEach((header, index) => {
           header.style.position = 'relative';
           const handle = document.createElement('span');
           handle.className = 'column-resizer';
@@ -233,7 +251,8 @@ Item:       id, type=Feature, geometry, properties.datetime, collection, assets<
               resetWidths();
             }
           });
-          header.append(handle);
+            header.append(handle);
+          });
         });
       })();
     </script>
