@@ -67,17 +67,16 @@
         <a href="#modules">3. Workshop: Module</a>
         <a href="#add-module">3.1 การ Add Module</a>
         <a href="#pipeline">4. Workshop: Data Pipeline</a>
-        <a href="#jpss">5. ประมวลผลกลุ่ม JPSS</a>
-        <a href="#theos">6. ประมวลผลกลุ่ม THEOS</a>
+        <a href="#theos">5. ประมวลผลข้อมูล THEOS ARD</a>
       </nav>
 
       <main>
         <header>
           <p class="eyebrow">Vallaris Maps / Training Manual</p>
           <h1>คู่มือการประมวลผลข้อมูลด้วย Vallaris Maps</h1>
-          <p>คู่มือสำหรับจัดเตรียม Module ออกแบบ Data Pipeline และสั่งประมวลผลข้อมูลดาวเทียมกลุ่ม JPSS และ THEOS ผ่านระบบ Vallaris Maps</p>
+          <p>คู่มือสำหรับจัดเตรียม Module ออกแบบ Data Pipeline และสั่งประมวลผลข้อมูลดาวเทียม THEOS ARD ผ่านระบบ Vallaris Maps</p>
           <div class="document-link"><a class="button" href="https://nsdc.gistda.or.th/management" target="_blank" rel="noopener noreferrer">เปิดระบบ Vallaris Maps</a></div>
-          <div class="meta"><span>เนื้อหา: Module / Pipeline / JPSS / THEOS</span><span>เรียบเรียงจากคู่มือกระบวนการต้นฉบับ</span></div>
+          <div class="meta"><span>เนื้อหา: Module / Pipeline / THEOS ARD</span><span>เรียบเรียงจากคู่มือกระบวนการต้นฉบับ</span></div>
         </header>
 
         <section id="overview">
@@ -190,39 +189,21 @@ outputs:
           </div>
         </section>
 
-        <section id="jpss">
-          <h2>5. Workshop การประมวลผลข้อมูลกลุ่ม JPSS</h2>
-          <p>ตัวอย่างนี้ใช้ Module 5 รายการสำหรับรับข้อมูลจาก S3 ประมวลผลผลิตภัณฑ์ สร้าง Coverage และเผยแพร่ STAC</p>
-          <div class="flow"><span>Input S3</span><b>→</b><span>Process JPSS</span><b>→</b><span>Create Coverage</span><b>→</b><span>Publish STAC</span><b>→</b><span>Verify Result</span></div>
-          <h3>จัดเตรียม Module</h3>
-          <div class="table-wrap"><table><thead><tr><th>ลำดับ</th><th>Module</th><th>วัตถุประสงค์</th><th>ดาวน์โหลด</th></tr></thead><tbody>
-            <tr><td>1</td><td>Input_s3</td><td>รับข้อมูลนำเข้าจาก S3</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f772352fab6af33ce88d/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
-            <tr><td>2</td><td>process_jpss</td><td>ประมวลผลข้อมูล JPSS</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f8a34072c2aced000ce2/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
-            <tr><td>3</td><td>create_coverage</td><td>สร้าง Coverage Collection</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f934584f4ec462a488a9/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
-            <tr><td>4</td><td>publish_stac</td><td>เผยแพร่ Metadata ในรูปแบบ STAC</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f968584f4ec462a488ab/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
-            <tr><td>5</td><td>verify_result</td><td>ตรวจสอบผลลัพธ์การประมวลผล</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f9bb584f4ec462a488ad/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
-          </tbody></table></div>
-          <div class="callout">ลิงก์ดาวน์โหลด Module ด้านบนถูกใส่ตามเอกสารต้นฉบับ และยังไม่ได้ตรวจสอบสถานะตามที่ระบุไว้</div>
-          <h3>สร้าง Data Pipeline</h3>
-          <div class="figure-grid"><figure class="figure"><img src="assets/vallaris-manual/image14.png" alt="รายการ JPSS Pipeline" /><figcaption>รูปที่ 14 รายการ Pipeline กลุ่ม JPSS</figcaption></figure><figure class="figure"><img src="assets/vallaris-manual/image15.png" alt="การออกแบบ JPSS Pipeline" /><figcaption>รูปที่ 15 การออกแบบ JPSS Pipeline</figcaption></figure></div>
-          <figure class="figure"><img src="assets/vallaris-manual/image16.png" alt="ผลลัพธ์การประมวลผล JPSS" /><figcaption>รูปที่ 16 ผลลัพธ์การประมวลผล JPSS</figcaption></figure>
-        </section>
-
         <section id="theos">
-          <h2>6. Workshop การประมวลผลข้อมูลกลุ่ม THEOS</h2>
-          <p>ขั้นตอน THEOS ใช้โครงสร้างเดียวกันกับ JPSS โดยเปลี่ยน Module ประมวลผลเป็น <code>process_theos</code></p>
-          <div class="flow"><span>Input S3</span><b>→</b><span>Process THEOS</span><b>→</b><span>Create Coverage</span><b>→</b><span>Publish STAC</span><b>→</b><span>Verify Result</span></div>
+          <h2>5. Workshop การประมวลผลข้อมูล THEOS ARD</h2>
+          <p>ตัวอย่าง THEOS ARD ใช้ Module <code>process_theos</code> ร่วมกับการรับข้อมูลจาก S3 การสร้าง Coverage และการเผยแพร่ STAC</p>
+          <div class="flow"><span>Input S3</span><b>→</b><span>Process THEOS ARD</span><b>→</b><span>Create Coverage</span><b>→</b><span>Publish STAC</span><b>→</b><span>Verify Result</span></div>
           <h3>จัดเตรียม Module</h3>
           <div class="table-wrap"><table><thead><tr><th>ลำดับ</th><th>Module</th><th>วัตถุประสงค์</th><th>ดาวน์โหลด</th></tr></thead><tbody>
             <tr><td>1</td><td>Input_s3</td><td>รับข้อมูลนำเข้าจาก S3</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976a3c584f4ec462a488fb/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
-            <tr><td>2</td><td>process_theos</td><td>ประมวลผลข้อมูล THEOS</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976a86584f4ec462a488fd/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>2</td><td>process_theos</td><td>ประมวลผลข้อมูล THEOS ARD</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976a86584f4ec462a488fd/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
             <tr><td>3</td><td>create_coverage</td><td>สร้าง Coverage Collection</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976aa6584f4ec462a488ff/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
             <tr><td>4</td><td>publish_stac</td><td>เผยแพร่ Metadata ในรูปแบบ STAC</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976ac2584f4ec462a48901/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
             <tr><td>5</td><td>verify_result</td><td>ตรวจสอบผลลัพธ์การประมวลผล</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976ade584f4ec462a48903/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
           </tbody></table></div>
           <h3>สร้าง Data Pipeline</h3>
-          <div class="figure-grid"><figure class="figure"><img src="assets/vallaris-manual/image17.png" alt="รายการ THEOS Pipeline" /><figcaption>รูปที่ 17 รายการ Pipeline กลุ่ม THEOS</figcaption></figure><figure class="figure"><img src="assets/vallaris-manual/image18.png" alt="การออกแบบ THEOS Pipeline" /><figcaption>รูปที่ 18 การออกแบบ THEOS Pipeline</figcaption></figure></div>
-          <figure class="figure"><img src="assets/vallaris-manual/image19.png" alt="ผลลัพธ์การประมวลผล THEOS" /><figcaption>รูปที่ 19 ผลลัพธ์การประมวลผล THEOS</figcaption></figure>
+          <div class="figure-grid"><figure class="figure"><img src="assets/vallaris-manual/image17.png" alt="รายการ THEOS ARD Pipeline" /><figcaption>รูปที่ 14 รายการ Pipeline กลุ่ม THEOS ARD</figcaption></figure><figure class="figure"><img src="assets/vallaris-manual/image18.png" alt="การออกแบบ THEOS ARD Pipeline" /><figcaption>รูปที่ 15 การออกแบบ THEOS ARD Pipeline</figcaption></figure></div>
+          <figure class="figure"><img src="assets/vallaris-manual/image19.png" alt="ผลลัพธ์การประมวลผล THEOS ARD" /><figcaption>รูปที่ 16 ผลลัพธ์การประมวลผล THEOS ARD</figcaption></figure>
           <p class="small">หมายเหตุ: ก่อนใช้งานจริง ผู้ดูแลระบบควรตรวจสอบสิทธิ์เข้าถึง S3, การตั้งค่าพารามิเตอร์ และสถานะของลิงก์ดาวน์โหลด Module ให้เหมาะกับระบบปลายทาง</p>
         </section>
         <footer>คู่มือการประมวลผลข้อมูลด้วย Vallaris Maps</footer>
