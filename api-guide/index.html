@@ -178,6 +178,9 @@ Item:       id, type=Feature, geometry, properties.datetime, collection, assets<
           if (headers.length < 2) return;
 
           const catalogueTable = table.closest('#catalogue-api-reference');
+          const parentDetails = table.closest('details');
+          const wasClosed = parentDetails && !parentDetails.open;
+          if (wasClosed) parentDetails.open = true;
           const firstRow = table.querySelector(':scope > tbody > tr');
           const rowCells = firstRow ? [...firstRow.children] : [];
           const tableWidth = table.getBoundingClientRect().width;
@@ -189,6 +192,7 @@ Item:       id, type=Feature, geometry, properties.datetime, collection, assets<
           const minimumWidths = catalogueTable
             ? [72, 180, 240]
             : headers.map((header, index) => /endpoint/i.test(header.textContent) ? 180 : index === 0 ? 72 : 140);
+          if (wasClosed) parentDetails.open = false;
           let colgroup = table.querySelector(':scope > colgroup');
           if (!colgroup) {
             colgroup = document.createElement('colgroup');
