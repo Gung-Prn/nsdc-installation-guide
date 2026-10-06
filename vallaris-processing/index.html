@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>คู่มือการประมวลผลข้อมูลด้วย Vallaris Maps</title>
+    <style>
+      :root { --ink:#172033; --muted:#5c667a; --paper:#fff; --soft:#f3f6fa; --line:#dce3ec; --accent:#176b87; --accent-soft:#e8f4f7; --code:#111827; --radius:12px; --shadow:0 12px 36px rgba(23,32,51,.08); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,"Noto Sans Thai",Arial,sans-serif; color:var(--ink); background:var(--soft); }
+      * { box-sizing:border-box; }
+      html { scroll-behavior:smooth; }
+      body { margin:0; line-height:1.65; }
+      a { color:var(--accent); }
+      .page { display:grid; grid-template-columns:260px minmax(0,920px); gap:32px; max-width:1250px; margin:0 auto; padding:32px 24px 64px; }
+      nav { position:sticky; top:24px; align-self:start; padding:20px; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); box-shadow:var(--shadow); }
+      nav strong { display:block; margin-bottom:10px; font-size:.92rem; }
+      nav a { display:block; padding:5px 0; color:var(--muted); font-size:.88rem; text-decoration:none; }
+      nav a:hover, nav a:focus-visible { color:var(--accent); text-decoration:underline; }
+      main { min-width:0; }
+      header, section { margin-bottom:24px; padding:30px 34px; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); box-shadow:var(--shadow); }
+      header { border-top:5px solid var(--accent); }
+      .eyebrow { margin:0 0 10px; color:var(--accent); font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+      h1,h2,h3 { margin-top:0; line-height:1.3; }
+      h1 { margin-bottom:12px; font-size:clamp(1.85rem,4vw,2.65rem); }
+      h2 { padding-bottom:10px; border-bottom:1px solid var(--line); font-size:1.45rem; }
+      h3 { margin-top:28px; margin-bottom:8px; font-size:1.08rem; }
+      p { margin:10px 0; }
+      ul,ol { padding-left:1.45rem; }
+      li + li { margin-top:5px; }
+      .meta { display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:18px; color:var(--muted); font-size:.88rem; }
+      .document-link { margin-top:16px; }
+      .button { display:inline-block; padding:8px 12px; border:1px solid var(--accent); border-radius:7px; font-weight:700; text-decoration:none; }
+      .button:hover,.button:focus-visible { color:#fff; background:var(--accent); }
+      .callout { margin:18px 0; padding:14px 16px; border-left:4px solid var(--accent); border-radius:6px; background:var(--accent-soft); }
+      .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:18px 0; }
+      .card { padding:15px; border:1px solid var(--line); border-radius:9px; background:var(--soft); }
+      .card strong { display:block; margin-bottom:4px; }
+      .figure { margin:22px 0; padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--soft); }
+      .figure img { display:block; width:100%; height:auto; border-radius:6px; background:#fff; }
+      figcaption { margin:8px 4px 1px; color:var(--muted); font-size:.86rem; }
+      .figure-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+      .figure-grid .figure { margin:0; }
+      code,pre { font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace; }
+      code { padding:.1em .34em; border-radius:4px; background:#edf1f6; font-size:.9em; }
+      pre { overflow-x:auto; margin:12px 0 18px; padding:16px; border-radius:9px; color:#f7fafc; background:var(--code); font-size:.83rem; line-height:1.55; white-space:pre; }
+      pre code { padding:0; color:inherit; background:transparent; }
+      .table-wrap { overflow-x:auto; margin:14px 0 20px; }
+      table { width:100%; border-collapse:collapse; font-size:.9rem; }
+      th,td { padding:11px 12px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+      th { background:var(--soft); }
+      .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:18px 0; }
+      .flow span { padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--soft); font-size:.9rem; }
+      .flow b { color:var(--accent); }
+      .small { color:var(--muted); font-size:.9rem; }
+      footer { padding:4px 8px 12px; color:var(--muted); font-size:.83rem; text-align:center; }
+      @media (max-width:850px) { .page { display:block; padding:18px 14px 42px; } nav { position:static; margin-bottom:18px; } header,section { padding:24px 20px; } .cards { grid-template-columns:1fr; } }
+      @media (max-width:560px) { .figure-grid { grid-template-columns:1fr; } }
+      @media print { :root { background:#fff; } .page { display:block; max-width:none; padding:0; } nav { display:none; } header,section { break-inside:avoid; box-shadow:none; } a { color:inherit; } }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav aria-label="สารบัญ">
+        <strong>สารบัญคู่มือ</strong>
+        <a href="#overview">1. ระบบการประมวลผลข้อมูล</a>
+        <a href="#capabilities">1.1 ความสามารถของ Vallaris</a>
+        <a href="#login">2. การเข้าใช้งานระบบ</a>
+        <a href="#modules">3. Workshop: Module</a>
+        <a href="#add-module">3.1 การ Add Module</a>
+        <a href="#pipeline">4. Workshop: Data Pipeline</a>
+        <a href="#jpss">5. ประมวลผลกลุ่ม JPSS</a>
+        <a href="#theos">6. ประมวลผลกลุ่ม THEOS</a>
+      </nav>
+
+      <main>
+        <header>
+          <p class="eyebrow">Vallaris Maps / Training Manual</p>
+          <h1>คู่มือการประมวลผลข้อมูลด้วย Vallaris Maps</h1>
+          <p>คู่มือสำหรับจัดเตรียม Module ออกแบบ Data Pipeline และสั่งประมวลผลข้อมูลดาวเทียมกลุ่ม JPSS และ THEOS ผ่านระบบ Vallaris Maps</p>
+          <div class="document-link"><a class="button" href="https://nsdc.gistda.or.th/management" target="_blank" rel="noopener noreferrer">เปิดระบบ Vallaris Maps</a></div>
+          <div class="meta"><span>เนื้อหา: Module / Pipeline / JPSS / THEOS</span><span>เรียบเรียงจากคู่มือกระบวนการต้นฉบับ</span></div>
+        </header>
+
+        <section id="overview">
+          <h2>1. ระบบการประมวลผลข้อมูล</h2>
+          <p>Vallaris Maps รองรับการประมวลผลข้อมูลเชิงพื้นที่ผ่านมาตรฐาน <strong>OGC API Processes</strong> โดยเชื่อมต่อหน่วยประมวลผลย่อย (Module) เป็นลำดับงาน (Data Pipeline) เพื่อให้กำหนดการรับข้อมูล การประมวลผล และการเผยแพร่ผลลัพธ์ได้ตามความต้องการ</p>
+          <div class="cards">
+            <div class="card"><strong>Module</strong>หน่วยประมวลผลย่อยที่มีอินพุต กระบวนการ และผลลัพธ์ชัดเจน</div>
+            <div class="card"><strong>Data Pipeline</strong>การเชื่อม Module หลายตัวเป็นขั้นตอนการทำงานต่อเนื่อง</div>
+            <div class="card"><strong>Execute</strong>สั่งทำงานทันที หรือตั้งเวลาทำงานอัตโนมัติด้วย Schedule</div>
+          </div>
+          <figure class="figure"><img src="assets/vallaris-manual/image1.png" alt="หน้าจอระบบ Vallaris Maps" /><figcaption>รูปที่ 1 หน้าจอระบบ Vallaris Maps</figcaption></figure>
+        </section>
+
+        <section id="capabilities">
+          <h2>1.1 ความสามารถของระบบ Vallaris</h2>
+          <ul>
+            <li>จัดการและเรียกใช้ Module สำหรับประมวลผลข้อมูลเชิงพื้นที่</li>
+            <li>ออกแบบ Data Pipeline แบบเชื่อมต่อขั้นตอนการทำงาน</li>
+            <li>กำหนดค่าพารามิเตอร์ อินพุต และผลลัพธ์ของแต่ละขั้นตอน</li>
+            <li>ตั้งเวลาเรียกใช้ Pipeline เพื่อประมวลผลข้อมูลแบบอัตโนมัติ</li>
+            <li>ตรวจสอบสถานะและบันทึกผลการทำงานผ่านหน้า Dashboard</li>
+          </ul>
+          <figure class="figure"><img src="assets/vallaris-manual/image2.png" alt="ความสามารถและแอปพลิเคชันของ Vallaris" /><figcaption>รูปที่ 2 ตัวอย่างความสามารถของระบบ Vallaris</figcaption></figure>
+        </section>
+
+        <section id="login">
+          <h2>2. การเข้าใช้งานระบบ</h2>
+          <p>เปิดหน้า <a href="https://nsdc.gistda.or.th/management" target="_blank" rel="noopener noreferrer">Vallaris Maps Management</a> แล้วเข้าสู่ระบบด้วยบัญชีผู้ใช้งานที่ได้รับสิทธิ์ จากนั้นเลือกพื้นที่ทำงานที่ต้องการ</p>
+          <div class="figure-grid">
+            <figure class="figure"><img src="assets/vallaris-manual/image3.png" alt="หน้าเข้าสู่ระบบ" /><figcaption>รูปที่ 3 หน้าเข้าสู่ระบบ</figcaption></figure>
+            <figure class="figure"><img src="assets/vallaris-manual/image4.png" alt="หน้า Dashboard หลังเข้าสู่ระบบ" /><figcaption>รูปที่ 4 หน้า Dashboard หลังเข้าสู่ระบบ</figcaption></figure>
+          </div>
+        </section>
+
+        <section id="modules">
+          <h2>3. Workshop การสร้างหน่วยประมวลผลย่อย (Module)</h2>
+          <h3>Vallaris Module คืออะไร</h3>
+          <p>Module คือหน่วยประมวลผลย่อยที่นำกลับมาใช้ซ้ำได้ ระบบมี Module สำเร็จรูปมากกว่า 50 รายการ และสามารถเพิ่ม Module ใหม่ให้เหมาะกับกระบวนการของหน่วยงานได้</p>
+          <ol>
+            <li>Raster</li><li>Vector</li><li>Database</li><li>File management</li><li>Image processing</li><li>Data conversion</li><li>Statistics</li><li>Machine learning</li><li>Publish service</li><li>Utility</li>
+          </ol>
+          <div class="callout"><strong>องค์ประกอบหลัก:</strong> Module แบ่งหน้าที่เป็น Input สำหรับรับข้อมูล, Process สำหรับประมวลผล และ Output สำหรับบันทึกหรือเผยแพร่ผลลัพธ์</div>
+          <figure class="figure"><img src="assets/vallaris-manual/image5.png" alt="หน้าจัดการ Module" /><figcaption>รูปที่ 5 หน้าจัดการ Module</figcaption></figure>
+        </section>
+
+        <section id="add-module">
+          <h2>3.1 การ Add Module เข้าสู่ระบบ</h2>
+          <p>ไฟล์ Module ประกอบด้วย <code>perform.py</code> สำหรับเขียนขั้นตอนการประมวลผล และไฟล์ <code>perform.yaml</code> สำหรับกำหนดรายละเอียด อินพุต เอาต์พุต และพารามิเตอร์ที่จะแสดงบนระบบ</p>
+          <h3>วิธีการ Add Module</h3>
+          <ol>
+            <li>ไปที่เมนู <strong>Process</strong> แล้วเลือก <strong>Module</strong></li>
+            <li>เลือก <strong>Add Module</strong> และอัปโหลดไฟล์ Module ที่จัดเตรียมไว้</li>
+            <li>ตรวจสอบรายละเอียดและสถานะการนำเข้าในหน้า Module หรือ Log ของระบบ</li>
+          </ol>
+          <div class="figure-grid">
+            <figure class="figure"><img src="assets/vallaris-manual/image6.png" alt="ขั้นตอนเพิ่ม Module" /><figcaption>รูปที่ 6 ขั้นตอนการเพิ่ม Module</figcaption></figure>
+            <figure class="figure"><img src="assets/vallaris-manual/image7.png" alt="ผลลัพธ์การเพิ่ม Module" /><figcaption>รูปที่ 7 สถานะหลังเพิ่ม Module</figcaption></figure>
+          </div>
+          <h3>ตัวอย่าง code module <code>perform.py</code></h3>
+          <pre><code>import vallaris
+import geopandas as gpd
+
+def perform(storage, parameter):
+    input_file = storage.get_file(parameter["input_file"])
+    distance = parameter["distance"]
+    output_file = storage.get_file(parameter["output_file"])
+
+    data = gpd.read_file(input_file)
+    result = data.buffer(distance)
+    result.to_file(output_file, driver="GeoJSON")
+
+    return {"output_file": output_file}</code></pre>
+          <h3>ตัวอย่างรูปแบบการเขียน <code>perform.yaml</code></h3>
+          <pre><code>id: Buffer
+name: Buffer
+description: Buffer vector data
+version: 1.0.0
+command: python perform.py
+inputs:
+  - id: input_file
+    type: file
+    title: Input vector file
+  - id: distance
+    type: number
+    title: Buffer distance
+outputs:
+  - id: output_file
+    type: file
+    title: Output GeoJSON file</code></pre>
+          <div class="figure-grid">
+            <figure class="figure"><img src="assets/vallaris-manual/image8.png" alt="ตัวอย่าง URL ผลลัพธ์ GeoJSON" /><figcaption>รูปที่ 8 ตัวอย่างผลลัพธ์ GeoJSON</figcaption></figure>
+            <figure class="figure"><img src="assets/vallaris-manual/image9.png" alt="หน้าจอ Add Pipeline" /><figcaption>รูปที่ 9 หน้าจอ Add Pipeline</figcaption></figure>
+          </div>
+        </section>
+
+        <section id="pipeline">
+          <h2>4. Workshop การสร้างหน่วยประมวลผล Data Pipeline</h2>
+          <p>Data Pipeline คือการนำ Module มาเชื่อมต่อกันเป็นลำดับงานเดียว สามารถกำหนดให้ทำงานแบบสั่งรันทันที (<strong>Execute</strong>) หรือตั้งรอบเวลา (<strong>Schedule</strong>) ได้</p>
+          <h3>วิธีการ Create Pipeline</h3>
+          <ol><li>เลือกเมนู <strong>Process</strong> แล้วเลือก <strong>Pipeline</strong></li><li>กด <strong>Add Pipeline</strong> เพื่อสร้างรายการใหม่</li><li>ลาก Module ที่ต้องการลงบนพื้นที่ออกแบบ และเชื่อม Output ของขั้นตอนก่อนหน้ากับ Input ของขั้นตอนถัดไป</li></ol>
+          <figure class="figure"><img src="assets/vallaris-manual/image10.png" alt="การเชื่อม Module บน Data Pipeline" /><figcaption>รูปที่ 10 การเชื่อม Module บน Data Pipeline</figcaption></figure>
+          <h3>ตั้งค่าและเพิ่มรายละเอียด Pipeline</h3>
+          <p>ระบุ Name, Description และ Type ของ Pipeline จากนั้นกำหนด Execution Type เป็น <strong>Execute</strong> หรือ <strong>Schedule</strong> หากต้องการตั้งเวลา สามารถอ้างอิงรูปแบบ Cron ได้จาก <a href="https://crontab.guru/" target="_blank" rel="noopener noreferrer">crontab.guru</a></p>
+          <figure class="figure"><img src="assets/vallaris-manual/image11.png" alt="หน้าตั้งค่ารายละเอียด Pipeline" /><figcaption>รูปที่ 11 หน้าตั้งค่ารายละเอียด Pipeline</figcaption></figure>
+          <h3>วิธีการ Execute และแก้ไข Pipeline</h3>
+          <p>เลือก Pipeline ที่ต้องการแล้วกด <strong>Execute</strong> เพื่อตรวจสอบผลการทำงาน สำหรับการแก้ไข ให้เปิด Pipeline เดิม ปรับ Module หรือเส้นเชื่อม แล้วบันทึกการเปลี่ยนแปลง</p>
+          <div class="figure-grid">
+            <figure class="figure"><img src="assets/vallaris-manual/image12.png" alt="การสั่ง Execute Pipeline" /><figcaption>รูปที่ 12 การสั่ง Execute Pipeline</figcaption></figure>
+            <figure class="figure"><img src="assets/vallaris-manual/image13.png" alt="การแก้ไขการออกแบบ Pipeline" /><figcaption>รูปที่ 13 การแก้ไขการออกแบบ Pipeline</figcaption></figure>
+          </div>
+        </section>
+
+        <section id="jpss">
+          <h2>5. Workshop การประมวลผลข้อมูลกลุ่ม JPSS</h2>
+          <p>ตัวอย่างนี้ใช้ Module 5 รายการสำหรับรับข้อมูลจาก S3 ประมวลผลผลิตภัณฑ์ สร้าง Coverage และเผยแพร่ STAC</p>
+          <div class="flow"><span>Input S3</span><b>→</b><span>Process JPSS</span><b>→</b><span>Create Coverage</span><b>→</b><span>Publish STAC</span><b>→</b><span>Verify Result</span></div>
+          <h3>จัดเตรียม Module</h3>
+          <div class="table-wrap"><table><thead><tr><th>ลำดับ</th><th>Module</th><th>วัตถุประสงค์</th><th>ดาวน์โหลด</th></tr></thead><tbody>
+            <tr><td>1</td><td>Input_s3</td><td>รับข้อมูลนำเข้าจาก S3</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f772352fab6af33ce88d/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>2</td><td>process_jpss</td><td>ประมวลผลข้อมูล JPSS</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f8a34072c2aced000ce2/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>3</td><td>create_coverage</td><td>สร้าง Coverage Collection</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f934584f4ec462a488a9/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>4</td><td>publish_stac</td><td>เผยแพร่ Metadata ในรูปแบบ STAC</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f968584f4ec462a488ab/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>5</td><td>verify_result</td><td>ตรวจสอบผลลัพธ์การประมวลผล</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a96f9bb584f4ec462a488ad/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+          </tbody></table></div>
+          <div class="callout">ลิงก์ดาวน์โหลด Module ด้านบนถูกใส่ตามเอกสารต้นฉบับ และยังไม่ได้ตรวจสอบสถานะตามที่ระบุไว้</div>
+          <h3>สร้าง Data Pipeline</h3>
+          <div class="figure-grid"><figure class="figure"><img src="assets/vallaris-manual/image14.png" alt="รายการ JPSS Pipeline" /><figcaption>รูปที่ 14 รายการ Pipeline กลุ่ม JPSS</figcaption></figure><figure class="figure"><img src="assets/vallaris-manual/image15.png" alt="การออกแบบ JPSS Pipeline" /><figcaption>รูปที่ 15 การออกแบบ JPSS Pipeline</figcaption></figure></div>
+          <figure class="figure"><img src="assets/vallaris-manual/image16.png" alt="ผลลัพธ์การประมวลผล JPSS" /><figcaption>รูปที่ 16 ผลลัพธ์การประมวลผล JPSS</figcaption></figure>
+        </section>
+
+        <section id="theos">
+          <h2>6. Workshop การประมวลผลข้อมูลกลุ่ม THEOS</h2>
+          <p>ขั้นตอน THEOS ใช้โครงสร้างเดียวกันกับ JPSS โดยเปลี่ยน Module ประมวลผลเป็น <code>process_theos</code></p>
+          <div class="flow"><span>Input S3</span><b>→</b><span>Process THEOS</span><b>→</b><span>Create Coverage</span><b>→</b><span>Publish STAC</span><b>→</b><span>Verify Result</span></div>
+          <h3>จัดเตรียม Module</h3>
+          <div class="table-wrap"><table><thead><tr><th>ลำดับ</th><th>Module</th><th>วัตถุประสงค์</th><th>ดาวน์โหลด</th></tr></thead><tbody>
+            <tr><td>1</td><td>Input_s3</td><td>รับข้อมูลนำเข้าจาก S3</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976a3c584f4ec462a488fb/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>2</td><td>process_theos</td><td>ประมวลผลข้อมูล THEOS</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976a86584f4ec462a488fd/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>3</td><td>create_coverage</td><td>สร้าง Coverage Collection</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976aa6584f4ec462a488ff/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>4</td><td>publish_stac</td><td>เผยแพร่ Metadata ในรูปแบบ STAC</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976ac2584f4ec462a48901/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+            <tr><td>5</td><td>verify_result</td><td>ตรวจสอบผลลัพธ์การประมวลผล</td><td><a href="https://nsdc.gistda.or.th/core/api/managements/1.0/files/6a976ade584f4ec462a48903/download" target="_blank" rel="noopener noreferrer">ดาวน์โหลด Module</a></td></tr>
+          </tbody></table></div>
+          <h3>สร้าง Data Pipeline</h3>
+          <div class="figure-grid"><figure class="figure"><img src="assets/vallaris-manual/image17.png" alt="รายการ THEOS Pipeline" /><figcaption>รูปที่ 17 รายการ Pipeline กลุ่ม THEOS</figcaption></figure><figure class="figure"><img src="assets/vallaris-manual/image18.png" alt="การออกแบบ THEOS Pipeline" /><figcaption>รูปที่ 18 การออกแบบ THEOS Pipeline</figcaption></figure></div>
+          <figure class="figure"><img src="assets/vallaris-manual/image19.png" alt="ผลลัพธ์การประมวลผล THEOS" /><figcaption>รูปที่ 19 ผลลัพธ์การประมวลผล THEOS</figcaption></figure>
+          <p class="small">หมายเหตุ: ก่อนใช้งานจริง ผู้ดูแลระบบควรตรวจสอบสิทธิ์เข้าถึง S3, การตั้งค่าพารามิเตอร์ และสถานะของลิงก์ดาวน์โหลด Module ให้เหมาะกับระบบปลายทาง</p>
+        </section>
+        <footer>คู่มือการประมวลผลข้อมูลด้วย Vallaris Maps</footer>
+      </main>
+    </div>
+  </body>
+</html>
